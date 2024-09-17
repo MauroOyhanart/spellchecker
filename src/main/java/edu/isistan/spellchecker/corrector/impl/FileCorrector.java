@@ -13,7 +13,7 @@ import java.io.*;
 public class FileCorrector extends Corrector {
 
 	/** Clase especial que se utiliza al tener 
-	 * algún error de formato en el archivo de entrada.
+	 * algun error de formato en el archivo de entrada.
 	 */
 	public static class FormatException extends Exception {
 		public FormatException(String msg) {
@@ -25,10 +25,10 @@ public class FileCorrector extends Corrector {
 	/**
 	 * Constructor del FileReader
 	 *
-	 * Utilice un BufferedReader para leer el archivo de definición
+	 * Utilice un BufferedReader para leer el archivo de definicion
 	 *
 	 * <p> 
-	 * Cada línea del archivo del diccionario tiene el siguiente formato: 
+	 * Cada linea del archivo del diccionario tiene el siguiente formato: 
 	 * misspelled_word,corrected_version
 	 *
 	 * <p>
@@ -42,7 +42,7 @@ public class FileCorrector extends Corrector {
 	 * ther,there<br>
 	 * </pre>
 	 * <p>
-	 * Estas líneas no son case-insensitive, por lo que todas deberían generar el mismo efecto:<br>
+	 * Estas lineas no son case-insensitive, por lo que todas deberian generar el mismo efecto:<br>
 	 * <pre>
 	 * baloon,balloon<br>
 	 * Baloon,balloon<br>
@@ -62,7 +62,7 @@ public class FileCorrector extends Corrector {
 	 * Los espacios son permitidos dentro de las sugerencias. 
 	 *
 	 * <p>
-	 * Debería arrojar <code>FileCorrector.FormatException</code> si se encuentra algún
+	 * Deberia arrojar <code>FileCorrector.FormatException</code> si se encuentra algun
 	 * error de formato:<br>
 	 * <pre>
 	 * ,correct<br>
@@ -101,13 +101,13 @@ public class FileCorrector extends Corrector {
 
 	/**
 	 * Retorna una lista de correcciones para una palabra dada.
-	 * Si la palabra mal escrita no está en el diccionario el set es vacio.
+	 * Si la palabra mal escrita no esta en el diccionario el set es vacio.
 	 * <p>
 	 * Ver superclase.
 	 *
 	 * @param wrong 
-	 * @return retorna un conjunto (potencialmente vacío) de sugerencias.
-	 * @throws IllegalArgumentException si la entrada no es una palabra válida 
+	 * @return retorna un conjunto (potencialmente vacio) de sugerencias.
+	 * @throws IllegalArgumentException si la entrada no es una palabra valida 
 	 */
 	public Set<String> getCorrections(String wrong) {
 		return null;
