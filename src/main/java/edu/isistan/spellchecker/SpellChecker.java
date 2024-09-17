@@ -1,16 +1,20 @@
 package edu.isistan.spellchecker;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Scanner;
 
 import edu.isistan.spellchecker.corrector.Corrector;
 import edu.isistan.spellchecker.corrector.Dictionary;
+import edu.isistan.spellchecker.tokenizer.TokenScanner;
 
 /**
  * El SpellChecker usa un Dictionary, un Corrector, and I/O para chequear
@@ -30,20 +34,25 @@ import edu.isistan.spellchecker.corrector.Dictionary;
 public class SpellChecker {
 	private Corrector corr;
 	private Dictionary dict;
+	private PrintStream out;
 
 	/**
 	 * Constructor del SpellChecker
 	 * 
 	 * @param c un Corrector
 	 * @param d un Dictionary
+	 * @throws NullPointerException si el corrector es null o el diccionario es null
 	 */
 	public SpellChecker(Corrector c, Dictionary d) {
+		Objects.requireNonNull(c);
+		Objects.requireNonNull(d);
+		this.out = System.out; //default out
 		corr = c;
 		dict = d;
 	}
 
 	/**
-	 * Returna un entero desde el Scanner provisto. El entero estara en el rango [min, max].
+	 * Retorna un entero desde el Scanner provisto. El entero estara en el rango [min, max].
 	 * Si no se ingresa un entero o este esta fuera de rango, repreguntara.
 	 *
 	 * @param min
@@ -60,7 +69,7 @@ public class SpellChecker {
 			} catch (NumberFormatException ex) {
 				// Was not a number. Ignore and prompt again.
 			}
-			System.out.println("Entrada invalida. Pruebe de nuevo!");
+			spellCheckerLog("Entrada invalida. Pruebe de nuevo!");
 		}
 	}
 
@@ -88,8 +97,31 @@ public class SpellChecker {
 	 * @throws IOException si se produce algun error leyendo el documento.
 	 */
 	public void checkDocument(Reader in, InputStream input, Writer out) throws IOException {
+		spellCheckerLog("Iniciando");
 		Scanner sc = new Scanner(input);
+		try (TokenScanner tokenScanner = new TokenScanner(in)) {
+			//STUB
+			while (tokenScanner.hasNext()) {
+				String token = tokenScanner.next();
+				if (TokenScanner.isWord(token)) { // [[es palabra]]
+					//chequear que no tenga errores o cosas para mejorar
+					//if (tiene errores o cosas para mejorar)
+					//	mejorar
+				} else {
 
-		// STUB
+				}
+			}
+		} catch(NoSuchElementException nse) {
+			spellCheckerLog("Se ha llegado al final del documento");
+		} catch (Exception e) {
+			spellCheckerLog("Error: " + e.getMessage());
+		}
+		finally {
+			sc.close();
+		}
+	}
+
+	private void spellCheckerLog(String text) {
+		out.println("Spell Checker: " + text);
 	}
 }

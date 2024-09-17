@@ -24,7 +24,7 @@ public class FileCorrector extends Corrector {
 
 	/**
 	 * Constructor del FileReader
-	 *
+	 * <p>
 	 * Utilice un BufferedReader para leer el archivo de definicion
 	 *
 	 * <p> 

@@ -1,13 +1,16 @@
 package edu.isistan.spellchecker.tokenizer;
 
 import java.util.Iterator;
+import java.util.Objects;
+import java.util.Scanner;
 import java.io.IOException;
 
 /**
  * Dado un archivo provee un metodo para recorrerlo.
  */
-public class TokenScanner implements Iterator<String> {
-
+public class TokenScanner implements Iterator<String>, AutoCloseable {
+    private Scanner sc;
+    
     /**
      * Crea un TokenScanner.
      * <p>
@@ -21,7 +24,8 @@ public class TokenScanner implements Iterator<String> {
      * @throws IllegalArgumentException si el Reader provisto es null
      */
     public TokenScanner(java.io.Reader in) throws IOException {
-
+        Objects.requireNonNull(in);
+        this.sc = new Scanner(in);
     }
 
     /**
@@ -34,7 +38,7 @@ public class TokenScanner implements Iterator<String> {
      * @return true si es un caracter
      */
     public static boolean isWordCharacter(int c) {
-        return false;
+        return (Character.isLetter(c) || c == '\'');
     }
 
     /**
@@ -47,14 +51,19 @@ public class TokenScanner implements Iterator<String> {
      * @return true si el string es una palabra.
      */
     public static boolean isWord(String s) {
-        return false;
+        if (s == null) return false;
+        for (int i = 0; i < s.length(); i++){
+            if (!isWordCharacter(s.charAt(i)))
+                return false;
+        }
+        return true;
     }
 
     /**
      * Determina si hay otro token en el reader.
      */
     public boolean hasNext() {
-        return false;
+        return sc.hasNext();
     }
 
     /**
@@ -63,7 +72,11 @@ public class TokenScanner implements Iterator<String> {
      * @throws NoSuchElementException cuando se alcanzo el final de stream
      */
     public String next() {
-        return null;
+        return sc.next();
+    }
+
+    public void close() {
+        this.sc.close();
     }
 
 }

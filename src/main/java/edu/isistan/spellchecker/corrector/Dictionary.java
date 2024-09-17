@@ -1,6 +1,9 @@
 package edu.isistan.spellchecker.corrector;
 
 import java.io.*;
+import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 import edu.isistan.spellchecker.tokenizer.TokenScanner;
 
@@ -12,21 +15,44 @@ import edu.isistan.spellchecker.tokenizer.TokenScanner;
  * o apostrofes.
  */
 public class Dictionary {
+	private Set<String> dic;
+	private PrintStream out;
 
 	/**
 	 * Construye un diccionario usando un TokenScanner
 	 * <p>
 	 * Una palabra valida es una secuencia de letras (ver Character.isLetter) o apostrofes.
-	 * Toda palabra no valida se debe ignorar
+	 * Toda palabra no valida se debe ignorar.
 	 *
 	 * <p>
+	 * Cierra el tokenScanner que se le da cuando lo termina de usar.
 	 *
 	 * @param ts 
 	 * @throws IOException Error leyendo el archivo
 	 * @throws IllegalArgumentException el TokenScanner es null
 	 */
 	public Dictionary(TokenScanner ts) throws IOException {
+		this.out = System.out; //default out
 
+		if (ts == null) throw new IllegalArgumentException();
+
+		this.dic = new HashSet<>();
+
+		while (ts.hasNext()) {
+			try {
+				String token = ts.next();
+				if (TokenScanner.isWord(token)) {
+					dic.add(token);
+					dictionaryLog("Added [" + token + "]");
+				}
+				else {
+					dictionaryLog("Not a word: [" + token + "]");
+				}
+			} catch (NoSuchElementException nse) {
+				dictionaryLog("Finalizado.");
+			}
+			
+		}
 	}
 
 	/**
@@ -68,6 +94,11 @@ public class Dictionary {
 	 * @return si la palabra esta en el diccionario.
 	 */
 	public boolean isWord(String word) {
-		return false;
+		if (word == null) return false;
+		return dic.contains(word);
+	}
+
+	private void dictionaryLog(String text) {
+		out.println("Dictionary: " + text);
 	}
 }

@@ -57,14 +57,19 @@ public class SpellCheckerRunner {
 		}
 		try (Reader in = new BufferedReader(new FileReader(args[0]));
 			Writer out = new BufferedWriter(new FileWriter(args[1]))) {
-				
+			log("inicializando objetos");
 			Dictionary dict = Dictionary.make(args[2]);
 			SpellChecker sp = new SpellChecker(makeCorrector(args[3], dict), dict);
+			log("chequeando documento");
 			sp.checkDocument(in, System.in, out);
 		} catch (IOException e) {
-			System.out.println("error procesando el document: " + e.getMessage());
+			System.err.println("main: Error procesando el documento: " + e.getMessage());
 		} catch (FileCorrector.FormatException e) {
-			System.out.println("error de formato: " + e.getMessage());
+			System.err.println("main: Error de formato: " + e.getMessage());
 		}
+	}
+
+	private static void log(String text) {
+		System.out.println("main: " + text);
 	}
 }
