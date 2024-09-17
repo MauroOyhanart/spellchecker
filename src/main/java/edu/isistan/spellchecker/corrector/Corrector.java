@@ -11,7 +11,7 @@ import java.util.Set;
  * que en general invocara al metodo matchCase.
  */
 public abstract class Corrector {
-
+	
 	/**
 	 * Retorna un conjunto con los mismos elementos del set de correcciones
 	 * salvo que o todas las letras son lower-case o la primera es upper-case y

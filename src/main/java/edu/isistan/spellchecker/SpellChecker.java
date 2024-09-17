@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.Set;
 
 import edu.isistan.spellchecker.corrector.Corrector;
 import edu.isistan.spellchecker.corrector.Dictionary;
@@ -28,7 +29,7 @@ import edu.isistan.spellchecker.tokenizer.TokenScanner;
  * <li> Toda la salida al usuario deben enviarse a System.out (salida estandar)
  * </ul>
  * <p>
- * El SpellChecker es usado por el SpellCkecherRunner. Ver:
+ * El SpellChecker es usado por el SpellCheckerRunner. Ver:
  * @see SpellCheckerRunner
  */
 public class SpellChecker {
@@ -103,12 +104,27 @@ public class SpellChecker {
 			//STUB
 			while (tokenScanner.hasNext()) {
 				String token = tokenScanner.next();
-				if (TokenScanner.isWord(token)) { // [[es palabra]]
-					//chequear que no tenga errores o cosas para mejorar
-					//if (tiene errores o cosas para mejorar)
-					//	mejorar
+				if (TokenScanner.isWord(token)) {
+					if (dict.isWord(token)) { // la considero como correcta si esta en el diccionario
+						out.write(token);
+					} else { //y si no, la intento corregir
+						spellCheckerLog("getting correcciones for token [" + token + "]");
+						Set<String> correcciones = corr.getCorrections(token);
+						if (correcciones != null && correcciones.size() > 0) {
+							String correccion = corr.getCorrections(token).stream().findFirst().orElse("-1");
+							if (!correccion.equals("-1")) {
+								//una correccion fue encontrada
+								spellCheckerLog("usamos " + correccion);
+								out.write(correccion);
+							} else {
+								spellCheckerLog("que raro!");
+							}
+						} else {
+							spellCheckerLog("no hay correcciones");
+						}
+					}
 				} else {
-
+					out.write(token);
 				}
 			}
 		} catch(NoSuchElementException nse) {
@@ -119,6 +135,7 @@ public class SpellChecker {
 		finally {
 			sc.close();
 		}
+		spellCheckerLog("Documento chequeado.");
 	}
 
 	private void spellCheckerLog(String text) {

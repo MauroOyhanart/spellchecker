@@ -43,16 +43,16 @@ public class Dictionary {
 				String token = ts.next();
 				if (TokenScanner.isWord(token)) {
 					dic.add(token);
-					dictionaryLog("Added [" + token + "]");
+					//dictionaryLog("Added [" + token + "]");
 				}
 				else {
-					dictionaryLog("Not a word: [" + token + "]");
+					//dictionaryLog("Not a word: [" + token + "]");
 				}
 			} catch (NoSuchElementException nse) {
 				dictionaryLog("Finalizado.");
 			}
-			
 		}
+		dictionaryLog(dic.size() + " words in dictionary");
 	}
 
 	/**

@@ -72,6 +72,9 @@ public class TokenScanner implements Iterator<String>, AutoCloseable {
      * @throws NoSuchElementException cuando se alcanzo el final de stream
      */
     public String next() {
+        if (sc.hasNext(" ")) {
+            return sc.useDelimiter(" ").next();
+        }
         return sc.next();
     }
 
