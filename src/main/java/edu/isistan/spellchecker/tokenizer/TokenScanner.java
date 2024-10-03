@@ -1,16 +1,16 @@
 package edu.isistan.spellchecker.tokenizer;
 
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 /**
  * Dado un archivo provee un metodo para recorrerlo.
  */
 public class TokenScanner implements Iterator<String>, AutoCloseable {
-    private Scanner sc;
-    
+    private final Scanner sc;
+    private String name;
     /**
      * Crea un TokenScanner.
      * <p>
@@ -24,8 +24,10 @@ public class TokenScanner implements Iterator<String>, AutoCloseable {
      * @throws IllegalArgumentException si el Reader provisto es null
      */
     public TokenScanner(java.io.Reader in) throws IOException {
-        Objects.requireNonNull(in);
+        if (in == null) throw new IllegalArgumentException("Reader provisto es null.");
         this.sc = new Scanner(in);
+        sc.useDelimiter("(?<=\\s)|(?=\\s)|(?<=\\n)|(?=[.,;!?$])|(?<=[.,;!?$])");
+        this.name = "TokenScanner";
     }
 
     /**
@@ -51,7 +53,7 @@ public class TokenScanner implements Iterator<String>, AutoCloseable {
      * @return true si el string es una palabra.
      */
     public static boolean isWord(String s) {
-        if (s == null) return false;
+        if (s == null || s.isEmpty()) return false;
         for (int i = 0; i < s.length(); i++){
             if (!isWordCharacter(s.charAt(i)))
                 return false;
@@ -71,15 +73,26 @@ public class TokenScanner implements Iterator<String>, AutoCloseable {
      *
      * @throws NoSuchElementException cuando se alcanzo el final de stream
      */
-    public String next() {
-        if (sc.hasNext(" ")) {
-            return sc.useDelimiter(" ").next();
-        }
-        return sc.next();
+    public String next() throws NoSuchElementException {
+        String token = sc.next();
+        //tokenScannerLog("returning " + token);
+        return token;
     }
 
     public void close() {
         this.sc.close();
     }
 
+    //Utils
+    private void tokenScannerLog(Object text) {
+        System.out.println(getName() + ": " + text);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

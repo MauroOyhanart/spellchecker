@@ -2,6 +2,7 @@ package edu.isistan.spellchecker.corrector;
 
 import java.io.*;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -35,14 +36,14 @@ public class Dictionary {
 		this.out = System.out; //default out
 
 		if (ts == null) throw new IllegalArgumentException();
-
+		ts.setName("TokenScannerDictionary");
 		this.dic = new HashSet<>();
 
 		while (ts.hasNext()) {
 			try {
 				String token = ts.next();
 				if (TokenScanner.isWord(token)) {
-					dic.add(token);
+					dic.add(token.toLowerCase());
 					//dictionaryLog("Added [" + token + "]");
 				}
 				else {
@@ -95,7 +96,7 @@ public class Dictionary {
 	 */
 	public boolean isWord(String word) {
 		if (word == null) return false;
-		return dic.contains(word);
+		return dic.contains(word.toLowerCase());
 	}
 
 	private void dictionaryLog(String text) {

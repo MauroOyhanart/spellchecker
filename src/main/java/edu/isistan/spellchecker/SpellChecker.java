@@ -101,26 +101,30 @@ public class SpellChecker {
 		spellCheckerLog("Iniciando");
 		Scanner sc = new Scanner(input);
 		try (TokenScanner tokenScanner = new TokenScanner(in)) {
+			tokenScanner.setName("TokenScannerFileIn");
 			//STUB
 			while (tokenScanner.hasNext()) {
 				String token = tokenScanner.next();
+				System.out.println("Document checking: got token " + Utils.wrap(token));
 				if (TokenScanner.isWord(token)) {
 					if (dict.isWord(token)) { // la considero como correcta si esta en el diccionario
 						out.write(token);
 					} else { //y si no, la intento corregir
-						spellCheckerLog("getting correcciones for token [" + token + "]");
+						spellCheckerLog("getting correcciones for token " + Utils.wrap(token));
 						Set<String> correcciones = corr.getCorrections(token);
-						if (correcciones != null && correcciones.size() > 0) {
+						if (correcciones != null && !correcciones.isEmpty()) {
 							String correccion = corr.getCorrections(token).stream().findFirst().orElse("-1");
 							if (!correccion.equals("-1")) {
 								//una correccion fue encontrada
-								spellCheckerLog("usamos " + correccion);
+								spellCheckerLog("usamos " + Utils.wrap(correccion));
 								out.write(correccion);
 							} else {
 								spellCheckerLog("que raro!");
 							}
 						} else {
-							spellCheckerLog("no hay correcciones");
+							spellCheckerLog("no hay correcciones. Ingresela por consola");
+							out.write(Utils.wrap(token));
+							//TODO implementar
 						}
 					}
 				} else {

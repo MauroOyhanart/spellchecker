@@ -6,11 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import edu.isistan.spellchecker.corrector.Corrector;
 
@@ -19,13 +15,13 @@ import edu.isistan.spellchecker.corrector.Corrector;
  * 
  */
 public class FileCorrector extends Corrector {
-	private PrintStream out;
+	private final PrintStream out;
 	/*
 	 * One to many
 	 * Permite facilmente saber las correcciones de una palabra.
 	 * No me permite facilmente saber, dado una correccion, a quien corrige (hay que iterar toda la estructura).
 	 */
-	private Map<String, Set<String>> correcciones; //ineficiente, pero bien
+	private final Map<String, Set<String>> correcciones; //ineficiente, pero bien
 
 	/**
 	 * Constructor del FileReader
@@ -135,7 +131,7 @@ public class FileCorrector extends Corrector {
 		try {
 			fc = new FileCorrector(r);
 		} finally {
-			if (r != null) { r.close(); }
+			r.close();
 		}
 		return fc;
 	}
@@ -146,7 +142,7 @@ public class FileCorrector extends Corrector {
 	 * <p>
 	 * Ver superclase.
 	 *
-	 * @param wrong 
+	 * @param wrong la palabra erronea
 	 * @return retorna un conjunto (potencialmente vacio) de sugerencias.
 	 * @throws IllegalArgumentException si la entrada no es una palabra valida 
 	 */
@@ -156,7 +152,7 @@ public class FileCorrector extends Corrector {
 				throw new IllegalArgumentException("Word cannot contain a digit");
 			}
 		}
-		Set<String> correcs = correcciones.get(wrong);
+		Set<String> correcs = correcciones.get(wrong.toLowerCase());
 		if (correcs == null) {
 			correcs = new HashSet<>();
 		}
