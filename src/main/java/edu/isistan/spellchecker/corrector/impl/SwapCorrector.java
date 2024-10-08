@@ -18,7 +18,7 @@ import edu.isistan.spellchecker.corrector.Dictionary;
 public class SwapCorrector extends Corrector {
 
 	/**
-	 * Construcye el SwapCorrector usando un Dictionary.
+	 * Construye el SwapCorrector usando un Dictionary.
 	 *
 	 * @param dict 
 	 * @throws IllegalArgumentException si el diccionario provisto es null

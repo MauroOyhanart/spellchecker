@@ -1,6 +1,8 @@
 package edu.isistan.spellchecker.corrector.impl;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
+
 
 import edu.isistan.spellchecker.corrector.Corrector;
 import edu.isistan.spellchecker.corrector.Dictionary;
@@ -23,16 +25,18 @@ import edu.isistan.spellchecker.corrector.Dictionary;
  * Este corrector sugiere palabras que esten a edit distance uno.
  */
 public class Levenshtein extends Corrector {
-
+	private final Dictionary dictionary;
 
 	/**
 	 * Construye un Levenshtein Corrector usando un Dictionary.
 	 * Debe arrojar <code>IllegalArgumentException</code> si el diccionario es null.
 	 *
-	 * @param dict
+	 * @param dict el diccionario
 	 */
 	public Levenshtein(Dictionary dict) {
-		throw new UnsupportedOperationException(); // STUB
+		if (dict == null) throw new IllegalArgumentException("Dictionary cannot be null");
+		this.dictionary = dict;
+
 	}
 
 	/**
@@ -40,7 +44,15 @@ public class Levenshtein extends Corrector {
 	 * @return todas las palabras a erase distance uno
 	 */
 	Set<String> getDeletions(String s) {
-		throw new UnsupportedOperationException(); // STUB
+		if (s == null) throw new IllegalArgumentException("Word is null");
+		System.out.println("dictionary contains this words:");
+		dictionary.printAll();
+		System.out.println("word to check is " + s);
+		return matchCase(s,
+				dictionary.filterBy(
+						(String word1) -> LevenshteinImpl.deleteDistance(s.toLowerCase(), word1.toLowerCase())
+				)
+		);
 	}
 
 	/**
@@ -48,7 +60,12 @@ public class Levenshtein extends Corrector {
 	 * @return todas las palabras a substitution distance uno
 	 */
 	public Set<String> getSubstitutions(String s) {
-		throw new UnsupportedOperationException(); // STUB
+		if (s == null) throw new IllegalArgumentException("Word is null");
+		return matchCase(s,
+				dictionary.filterBy(
+					(String word1) -> LevenshteinImpl.replaceDistance(s.toLowerCase(), word1.toLowerCase())
+				)
+		);
 	}
 
 
@@ -57,10 +74,20 @@ public class Levenshtein extends Corrector {
 	 * @return todas las palabras a insert distance uno
 	 */
 	public Set<String> getInsertions(String s) {
-		throw new UnsupportedOperationException(); // STUB
+		if (s == null) throw new IllegalArgumentException("Word is null");
+		return matchCase(s,
+				dictionary.filterBy(
+						(String word1) -> LevenshteinImpl.insertDistance(s.toLowerCase(), word1.toLowerCase())
+				)
+		);
 	}
 
 	public Set<String> getCorrections(String wrong) {
-		throw new UnsupportedOperationException(); // STUB
-	}
+		if (wrong == null) throw new IllegalArgumentException("Wrong is null");
+		return matchCase(wrong,
+				dictionary.filterBy(
+						(String word1) -> LevenshteinImpl.levenshteinDistance(wrong.toLowerCase(), word1.toLowerCase())
+				)
+		);
+	};
 }

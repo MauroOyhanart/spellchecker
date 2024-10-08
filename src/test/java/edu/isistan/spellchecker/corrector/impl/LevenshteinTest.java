@@ -30,7 +30,7 @@ public class LevenshteinTest {
 
 
 	@Before public void setUp() throws IOException {
-		Dictionary dict = new Dictionary(new TokenScanner(new FileReader("smallDictionary.txt")));
+		Dictionary dict = new Dictionary(new TokenScanner(new FileReader("/usr/local/tallerjava/proyectofinal/smallDictionary.txt")));
 		corr = new Levenshtein(dict);
 	}
 

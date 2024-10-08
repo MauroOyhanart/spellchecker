@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SpellChecker" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="edu.isistan.spellchecker.SpellCheckerRunner" />
+    <module name="spellchecker" />
+    <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/../theFox.txt $PROJECT_DIR$/../output.txt $PROJECT_DIR$/../theFoxDictionary.txt $PROJECT_DIR$/../theFoxMisspellings.txt" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

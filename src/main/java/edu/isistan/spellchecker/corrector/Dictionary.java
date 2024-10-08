@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import edu.isistan.spellchecker.tokenizer.TokenScanner;
 
@@ -16,8 +20,7 @@ import edu.isistan.spellchecker.tokenizer.TokenScanner;
  * o apostrofes.
  */
 public class Dictionary {
-	private Set<String> dic;
-	private PrintStream out;
+	private final Set<String> dic;
 
 	/**
 	 * Construye un diccionario usando un TokenScanner
@@ -33,8 +36,6 @@ public class Dictionary {
 	 * @throws IllegalArgumentException el TokenScanner es null
 	 */
 	public Dictionary(TokenScanner ts) throws IOException {
-		this.out = System.out; //default out
-
 		if (ts == null) throw new IllegalArgumentException();
 		ts.setName("TokenScannerDictionary");
 		this.dic = new HashSet<>();
@@ -100,6 +101,19 @@ public class Dictionary {
 	}
 
 	private void dictionaryLog(String text) {
-		out.println("Dictionary: " + text);
+		System.out.println("Dictionary: " + text);
+	}
+
+	public Set<String> filterBy(Function<String, Integer> f) {
+		Set<String> wordsThatMatchF = new HashSet<>();
+		dictionaryLog("f is " + f.toString());
+		wordsThatMatchF = this.dic.stream().filter(t -> f.apply(t) == 1).collect(Collectors.toSet());
+		dictionaryLog("words returned: ");
+		wordsThatMatchF.forEach(System.out::println);
+		return wordsThatMatchF;
+	}
+
+	public void printAll() {
+		this.dic.stream().sorted().forEach(System.out::println);
 	}
 }

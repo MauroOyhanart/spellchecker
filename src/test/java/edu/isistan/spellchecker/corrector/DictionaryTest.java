@@ -15,7 +15,7 @@ public class DictionaryTest {
 
   
   @Test(timeout=500) public void testDictionaryContainsSimple() throws IOException {
-    Dictionary d = new Dictionary(new TokenScanner(new FileReader("smallDictionary.txt")));
+    Dictionary d = new Dictionary(new TokenScanner(new FileReader("/usr/local/tallerjava/proyectofinal/smallDictionary.txt")));
     assertTrue("'apple' -> should be true ('apple' in file)", d.isWord("apple"));
     assertTrue("'Banana' -> should be true ('banana' in file)", d.isWord("Banana"));
     assertFalse("'pineapple' -> should be false", d.isWord("pineapple"));
@@ -23,7 +23,7 @@ public class DictionaryTest {
 
   
   @Test(timeout=500) public void testDictionaryContainsApostrophe() throws IOException {
-    Dictionary d = new Dictionary(new TokenScanner(new FileReader("smallDictionary.txt")));
+    Dictionary d = new Dictionary(new TokenScanner(new FileReader("/usr/local/tallerjava/proyectofinal/smallDictionary.txt")));
     assertTrue("'it's' -> should be true ('it's' in file)", d.isWord("it's"));
   }
 

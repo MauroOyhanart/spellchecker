@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.Reader;
 import java.util.*;
 
@@ -15,13 +14,12 @@ import edu.isistan.spellchecker.corrector.Corrector;
  * 
  */
 public class FileCorrector extends Corrector {
-	private final PrintStream out;
 	/*
 	 * One to many
 	 * Permite facilmente saber las correcciones de una palabra.
 	 * No me permite facilmente saber, dado una correccion, a quien corrige (hay que iterar toda la estructura).
 	 */
-	private final Map<String, Set<String>> correcciones; //ineficiente, pero bien
+	private final Map<String, Set<String>> corrections; //ineficiente, pero bien
 
 	/**
 	 * Constructor del FileReader
@@ -79,8 +77,8 @@ public class FileCorrector extends Corrector {
 	 * @throws IllegalArgumentException reader es null
 	 */
 	public FileCorrector(Reader r) throws IOException, FormatException {
-		this.out = System.out; //default out
-		this.correcciones = new HashMap<>();
+		if (r == null) throw new IllegalArgumentException("Reader is null");
+		this.corrections = new HashMap<>();
 		try (BufferedReader reader = new BufferedReader(r)) {
 			Iterator<String> it = reader.lines().iterator();
 			while (it.hasNext()) {
@@ -91,12 +89,12 @@ public class FileCorrector extends Corrector {
 					//respetamos case
 					String token = words[0];
 					String correccion = words[1];
-					Set<String> correcs = correcciones.get(token);
+					Set<String> correcs = corrections.get(token);
 					if (correcs == null) {
 						correcs = new HashSet<>();
-						correcciones.put(token, correcs);
+						corrections.put(token.toLowerCase(), correcs);
 					}
-					correcs.add(correccion);
+					correcs.add(correccion.toLowerCase());
 				}
 			}
 		} catch (Exception e) {
@@ -105,7 +103,7 @@ public class FileCorrector extends Corrector {
 			throw new FormatException(e.getMessage());
 		}
 		fileCorrectorLog("printing correcciones:");
-		Set<Map.Entry<String, Set<String>>> entrySet = correcciones.entrySet();
+		Set<Map.Entry<String, Set<String>>> entrySet = corrections.entrySet();
 		for (Map.Entry<String, Set<String>> entry: entrySet) {
 			StringBuilder sb = new StringBuilder("\"" + entry.getKey() + "\" -> [");
 			for (String str: entry.getValue()) {
@@ -147,12 +145,13 @@ public class FileCorrector extends Corrector {
 	 * @throws IllegalArgumentException si la entrada no es una palabra valida 
 	 */
 	public Set<String> getCorrections(String wrong) {
+		fileCorrectorLog("~word: " + wrong);
 		for (int i = 0; i < wrong.length(); i++) {
 			if (wrong.charAt(i) >= '0' && wrong.charAt(i) <= '9') {
 				throw new IllegalArgumentException("Word cannot contain a digit");
 			}
 		}
-		Set<String> correcs = correcciones.get(wrong.toLowerCase());
+		Set<String> correcs = corrections.get(wrong.toLowerCase());
 		if (correcs == null) {
 			correcs = new HashSet<>();
 		}
@@ -160,7 +159,7 @@ public class FileCorrector extends Corrector {
 	}
 
 	private void fileCorrectorLog(String text) {
-		out.println("File Corrector: " + text);
+		System.out.println("File Corrector: " + text);
 	}
 	
 
