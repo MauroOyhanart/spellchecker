@@ -1,6 +1,4 @@
 package edu.isistan.spellchecker.corrector.impl;
-import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 
 
@@ -50,7 +48,7 @@ public class Levenshtein extends Corrector {
 		System.out.println("word to check is " + s);
 		return matchCase(s,
 				dictionary.filterBy(
-						(String word1) -> LevenshteinImpl.deleteDistance(s.toLowerCase(), word1.toLowerCase())
+						(String word1) -> LevenshteinImpl.deleteDistanceOne(s.toLowerCase(), word1.toLowerCase())
 				)
 		);
 	}
@@ -63,7 +61,7 @@ public class Levenshtein extends Corrector {
 		if (s == null) throw new IllegalArgumentException("Word is null");
 		return matchCase(s,
 				dictionary.filterBy(
-					(String word1) -> LevenshteinImpl.replaceDistance(s.toLowerCase(), word1.toLowerCase())
+					(String word1) -> LevenshteinImpl.replaceDistanceOne(s.toLowerCase(), word1.toLowerCase())
 				)
 		);
 	}
@@ -77,7 +75,7 @@ public class Levenshtein extends Corrector {
 		if (s == null) throw new IllegalArgumentException("Word is null");
 		return matchCase(s,
 				dictionary.filterBy(
-						(String word1) -> LevenshteinImpl.insertDistance(s.toLowerCase(), word1.toLowerCase())
+						(String word1) -> LevenshteinImpl.insertDistanceOne(s.toLowerCase(), word1.toLowerCase())
 				)
 		);
 	}

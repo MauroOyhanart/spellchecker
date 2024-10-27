@@ -80,7 +80,7 @@ public class Dictionary {
 	 * @return numero de palabras unicas
 	 */
 	public int getNumWords() {
-		return -1;
+		return dic.size();
 	}
 
 	/**
@@ -104,12 +104,14 @@ public class Dictionary {
 		System.out.println("Dictionary: " + text);
 	}
 
+	/**
+	 * Retorna las palabras del diccionario que cumplen con la condicion de que la funcion {@code f} pasada como parametro devuelve 1 cuando se le aplica cualquiera de las palabras retornadas por filterBy.
+	 * @param f la funcion a aplicarle la palabra del diccionario, que si devuelve 1, sera retornada en el set.
+	 * @return un set de palabras del diccionario que cumplen con la condicion.
+	 */
 	public Set<String> filterBy(Function<String, Integer> f) {
 		Set<String> wordsThatMatchF = new HashSet<>();
-		dictionaryLog("f is " + f.toString());
 		wordsThatMatchF = this.dic.stream().filter(t -> f.apply(t) == 1).collect(Collectors.toSet());
-		dictionaryLog("words returned: ");
-		wordsThatMatchF.forEach(System.out::println);
 		return wordsThatMatchF;
 	}
 

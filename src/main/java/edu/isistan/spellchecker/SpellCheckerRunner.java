@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.List;
 
 import edu.isistan.spellchecker.corrector.Corrector;
 import edu.isistan.spellchecker.corrector.Dictionary;
@@ -41,35 +40,43 @@ public class SpellCheckerRunner {
 	private static Corrector makeCorrector(String type, Dictionary dict)
 			throws IOException, FileCorrector.FormatException {
 		if (type.equals("SWAP")) {
+			log("Corrector -> SwapCorrector");
 			return new SwapCorrector(dict);
 		}
 		if (type.equals("LEV")) {
+			log("Corrector -> Levenshtein Corrector");
 			return new Levenshtein(dict);
 		}
+		log("Corrector -> File Corrector");
 		return FileCorrector.make(type);
 	}
 
 	public static void main(String[] args) {
 		if (args.length != 4) {
-			System.out.println("uso: java SpellCheckRunner <in> <out> <dictionary> <corrector>");
-			System.out.println("<corrector> es SWAP, LEV, or el path para instanciar el FileCorrector.");
+			log("uso: java SpellCheckRunner <in> <out> <dictionary> <corrector>");
+			log("<corrector> es SWAP, LEV, or el path para instanciar el FileCorrector.");
 			return;
 		}
 		try (Reader in = new BufferedReader(new FileReader(args[0]));
 			Writer out = new BufferedWriter(new FileWriter(args[1]))) {
-			log("inicializando objetos");
+						log("inicializando objetos");
 			Dictionary dict = Dictionary.make(args[2]);
 			SpellChecker sp = new SpellChecker(makeCorrector(args[3], dict), dict);
 			log("chequeando documento");
 			sp.checkDocument(in, System.in, out);
+			log("finalizado");
 		} catch (IOException e) {
-			System.err.println("main: Error procesando el documento: " + e.getMessage());
+			logErr("main: Error procesando el documento: " + e.getMessage());
 		} catch (FileCorrector.FormatException e) {
-			System.err.println("main: Error de formato: " + e.getMessage());
+			logErr("main: Error de formato: " + e.getMessage());
 		}
 	}
 
-	private static void log(String text) {
-		System.out.println("main: " + text);
+	private static void log(Object text) {
+		System.out.println("Main: " + text.toString());
+	}
+
+	private static void logErr(Object text) {
+		System.err.println("Main [error]: " + text.toString());
 	}
 }

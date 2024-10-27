@@ -59,27 +59,39 @@ public class SpellCheckerTest {
 	}
 
 
-
+	/**
+	 * Comentario de por que falla:
+	 * Yo lo que pregunte por email y no entendi la respuesta, es "como hago para resolver la situacion en la que 'brown' no es encontrada en el diccionario?".
+	 * Lo que hice es tomarlo por stdin, es decir por la terminal, pero claro este test no admite esto y por eso falla.
+	 */
 	@Test(timeout=500) public void testCheckFoxGood() throws IOException, FileCorrector.FormatException {
-		spellCheckFiles("theFoxDictionary.txt",7,"theFoxMisspellings.txt",
-				"theFox.txt","foxout.txt","theFox_goodinput.txt");
-		compareDocs("foxout.txt", "theFox_expected_output.txt");
+		spellCheckFiles("/usr/local/tallerjava/proyectofinal/theFoxDictionary.txt",7,"/usr/local/tallerjava/proyectofinal/theFoxMisspellings.txt",
+				"/usr/local/tallerjava/proyectofinal/theFox.txt","/usr/local/tallerjava/proyectofinal/foxout.txt","/usr/local/tallerjava/proyectofinal/theFox_goodinput.txt");
+		compareDocs("/usr/local/tallerjava/proyectofinal/foxout.txt", "/usr/local/tallerjava/proyectofinal/theFox_expected_output.txt");
 	}
 
 
+	/**
+	 * Comentario de por que falla (exactamente igual al de arriba):
+	 * Yo lo que pregunte por email y no entendi la respuesta, es "como hago para resolver la situacion en la que 'brown' no es encontrada en el diccionario?".
+	 * Lo que hice es tomarlo por stdin, es decir por la terminal, pero claro este test no admite esto y por eso falla.
+	 */
 	@Test(timeout=500) public void testCheckMeanInput() throws IOException, FileCorrector.FormatException {
-		spellCheckFiles("theFoxDictionary.txt",7,"theFoxMisspellings.txt",
-				"theFox.txt","foxout.txt","theFox_meaninput.txt");
-		compareDocs("foxout.txt", "theFox_expected_output.txt");
+		spellCheckFiles("/usr/local/tallerjava/proyectofinal/theFoxDictionary.txt",7,"/usr/local/tallerjava/proyectofinal/theFoxMisspellings.txt",
+				"/usr/local/tallerjava/proyectofinal/theFox.txt","/usr/local/tallerjava/proyectofinal/foxout.txt","/usr/local/tallerjava/proyectofinal/theFox_meaninput.txt");
+		compareDocs("/usr/local/tallerjava/proyectofinal/foxout.txt", "/usr/local/tallerjava/proyectofinal/theFox_expected_output.txt");
 	}
 
 
+	/**
+	 * Esto lo mismo que los anteriores.
+	 */
 	@Test(timeout=500) public void testCheckGettysburgSwap() throws IOException, FileCorrector.FormatException {
 		// Use the SwapCorrector instead!
-		spellCheckFiles("dictionary.txt",60822,null,
-				"Gettysburg.txt","Gettysburg-out.txt",
-				"Gettysburg_input.txt");
-		compareDocs("Gettysburg-out.txt", "Gettysburg_expected_output.txt");
+		spellCheckFiles("/usr/local/tallerjava/proyectofinal/dictionary.txt",60822,null,
+				"/usr/local/tallerjava/proyectofinal/Gettysburg.txt","/usr/local/tallerjava/proyectofinal/Gettysburg-out.txt",
+				"/usr/local/tallerjava/proyectofinal/Gettysburg_input.txt");
+		compareDocs("/usr/local/tallerjava/proyectofinal/Gettysburg-out.txt", "/usr/local/tallerjava/proyectofinal/Gettysburg_expected_output.txt");
 	}
 
 

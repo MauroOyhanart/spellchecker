@@ -25,7 +25,7 @@ public class SwapCorrectorTest {
 
 
 	@Test public void testSwapCorrections() throws IOException {
-		Reader reader = new FileReader("smallDictionary.txt");
+		Reader reader = new FileReader("/usr/local/tallerjava/proyectofinal/smallDictionary.txt");
 		try {
 			Dictionary d = new Dictionary(new TokenScanner(reader));
 			SwapCorrector swap = new SwapCorrector(d);

@@ -26,7 +26,7 @@ public class TokenScanner implements Iterator<String>, AutoCloseable {
     public TokenScanner(java.io.Reader in) throws IOException {
         if (in == null) throw new IllegalArgumentException("Reader provisto es null.");
         this.sc = new Scanner(in);
-        sc.useDelimiter("(?<=\\s)|(?=\\s)|(?<=\\n)|(?=[.,;!?$])|(?<=[.,;!?$])");
+        sc.useDelimiter("(?<=\\s)(?=\\S)|(?<=\\S)(?=\\s)|(?<=\\n)|(?=[.,;!?$])|(?<=[.,;!?$])|(?<=\\s\\n)|(?=\\s\\n)");
         this.name = "TokenScanner";
     }
 
@@ -75,7 +75,6 @@ public class TokenScanner implements Iterator<String>, AutoCloseable {
      */
     public String next() throws NoSuchElementException {
         String token = sc.next();
-        //tokenScannerLog("returning " + token);
         return token;
     }
 

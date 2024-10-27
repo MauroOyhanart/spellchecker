@@ -1,10 +1,5 @@
 package edu.isistan.spellchecker;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,9 +28,8 @@ import edu.isistan.spellchecker.tokenizer.TokenScanner;
  * @see SpellCheckerRunner
  */
 public class SpellChecker {
-	private Corrector corr;
-	private Dictionary dict;
-	private PrintStream out;
+	private final Corrector corr;
+	private final Dictionary dict;
 
 	/**
 	 * Constructor del SpellChecker
@@ -45,11 +39,8 @@ public class SpellChecker {
 	 * @throws NullPointerException si el corrector es null o el diccionario es null
 	 */
 	public SpellChecker(Corrector c, Dictionary d) {
-		Objects.requireNonNull(c);
-		Objects.requireNonNull(d);
-		this.out = System.out; //default out
-		corr = c;
-		dict = d;
+		this.corr = Objects.requireNonNull(c);
+		this.dict = Objects.requireNonNull(d);
 	}
 
 	/**
@@ -99,50 +90,63 @@ public class SpellChecker {
 	 */
 	public void checkDocument(Reader in, InputStream input, Writer out) throws IOException {
 		spellCheckerLog("Iniciando");
-		Scanner sc = new Scanner(input);
-		try (TokenScanner tokenScanner = new TokenScanner(in)) {
-			tokenScanner.setName("TokenScannerFileIn");
-			//STUB
-			while (tokenScanner.hasNext()) {
-				String token = tokenScanner.next();
-				System.out.println("Document checking: got token " + Utils.wrap(token));
-				if (TokenScanner.isWord(token)) {
-					if (dict.isWord(token)) { // la considero como correcta si esta en el diccionario
-						out.write(token);
-					} else { //y si no, la intento corregir
-						spellCheckerLog("getting correcciones for token " + Utils.wrap(token));
-						Set<String> correcciones = corr.getCorrections(token);
-						if (correcciones != null && !correcciones.isEmpty()) {
-							String correccion = corr.getCorrections(token).stream().findFirst().orElse("-1");
-							if (!correccion.equals("-1")) {
-								//una correccion fue encontrada
-								spellCheckerLog("usamos " + Utils.wrap(correccion));
-								out.write(correccion);
-							} else {
-								spellCheckerLog("que raro!");
-							}
-						} else {
-							spellCheckerLog("no hay correcciones. Ingresela por consola");
-							out.write(Utils.wrap(token));
-							//TODO implementar
-						}
-					}
-				} else {
-					out.write(token);
-				}
-			}
-		} catch(NoSuchElementException nse) {
-			spellCheckerLog("Se ha llegado al final del documento");
-		} catch (Exception e) {
-			spellCheckerLog("Error: " + e.getMessage());
-		}
-		finally {
-			sc.close();
-		}
+
+        try (TokenScanner tokenScanner = new TokenScanner(in);
+			 BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
+            tokenScanner.setName("TokenScannerFileIn"); //para logging
+            checkDocumentP(tokenScanner, reader, out);
+        } catch (IOException ioe) {
+            spellCheckerLog("Error escribiendo o leyendo: " + ioe.getMessage() + "\nRethrow:\n");
+            throw ioe;
+        } catch (NoSuchElementException nse) {
+            spellCheckerLog("Se ha llegado al final del documento");
+        } catch (Exception e) {
+            spellCheckerLog("Error: " + e.getMessage());
+        }
 		spellCheckerLog("Documento chequeado.");
 	}
 
+	private void checkDocumentP(TokenScanner tokenScanner, BufferedReader reader, Writer out) throws IOException {
+		while (tokenScanner.hasNext()) {
+			String token = tokenScanner.next();
+			spellCheckerLog("\t1. Got token " + Utils.wrap(token));
+			if (TokenScanner.isWord(token)) {
+				if (dict.isWord(token)) { // la considero como correcta si esta en el diccionario
+					out.write(token);
+				} else { //y si no, la intento corregir
+					spellCheckerLog("\t2. Getting correcciones for token " + Utils.wrap(token));
+					Set<String> correcciones = corr.getCorrections(token);
+					if (correcciones != null && !correcciones.isEmpty()) {
+						String correccion = corr.getCorrections(token).stream().findFirst().orElse(Utils.wrap(token));
+						//una correccion fue encontrada
+						spellCheckerLog("\t3. Usamos " + Utils.wrap(correccion));
+						out.write(correccion);
+					} else {
+						spellCheckerLog("\t3. No hay correcciones. Ingresela por consola");
+						String correccion = readNext(reader);
+						out.write(correccion);
+						spellCheckerLog("\t4. Correccion manual: " + Utils.wrap(token) + " -> " + correccion);
+					}
+				}
+			} else { //Si no es una palabra del diccionario, la agrego.
+				out.write(token);
+			}
+		}
+	}
+
+	/**
+	 * Lee el siguiente string desde el inputStream
+	 */
+	private String readNext(BufferedReader reader) throws IOException {
+		String next = reader.readLine();
+		while (!dict.isWord(next)) {
+			next = reader.readLine();
+		}
+		if (next == null) next = "";
+		return next;
+	}
+
 	private void spellCheckerLog(String text) {
-		out.println("Spell Checker: " + text);
+		System.out.println("\tSpell Checker: " + text);
 	}
 }

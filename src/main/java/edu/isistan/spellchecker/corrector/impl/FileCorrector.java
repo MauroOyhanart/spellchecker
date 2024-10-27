@@ -145,7 +145,7 @@ public class FileCorrector extends Corrector {
 	 * @throws IllegalArgumentException si la entrada no es una palabra valida 
 	 */
 	public Set<String> getCorrections(String wrong) {
-		fileCorrectorLog("~word: " + wrong);
+		fileCorrectorLog("Palabra a buscarle correcciones: " + wrong);
 		for (int i = 0; i < wrong.length(); i++) {
 			if (wrong.charAt(i) >= '0' && wrong.charAt(i) <= '9') {
 				throw new IllegalArgumentException("Word cannot contain a digit");
@@ -159,7 +159,7 @@ public class FileCorrector extends Corrector {
 	}
 
 	private void fileCorrectorLog(String text) {
-		System.out.println("File Corrector: " + text);
+		System.out.println("\t\tFile Corrector: " + text);
 	}
 	
 
