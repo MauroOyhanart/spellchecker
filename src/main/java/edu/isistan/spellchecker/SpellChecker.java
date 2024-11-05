@@ -94,7 +94,7 @@ public class SpellChecker {
         try (TokenScanner tokenScanner = new TokenScanner(in);
 			 BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
             tokenScanner.setName("TokenScannerFileIn"); //para logging
-            checkDocumentP(tokenScanner, reader, out);
+            checkDocumentDo(tokenScanner, reader, out);
         } catch (IOException ioe) {
             spellCheckerLog("Error escribiendo o leyendo: " + ioe.getMessage() + "\nRethrow:\n");
             throw ioe;
@@ -106,7 +106,7 @@ public class SpellChecker {
 		spellCheckerLog("Documento chequeado.");
 	}
 
-	private void checkDocumentP(TokenScanner tokenScanner, BufferedReader reader, Writer out) throws IOException {
+	private void checkDocumentDo(TokenScanner tokenScanner, BufferedReader reader, Writer out) throws IOException {
 		while (tokenScanner.hasNext()) {
 			String token = tokenScanner.next();
 			spellCheckerLog("\t1. Got token " + Utils.wrap(token));
@@ -125,7 +125,7 @@ public class SpellChecker {
 						spellCheckerLog("\t3. No hay correcciones. Ingresela por consola");
 						String correccion = readNext(reader);
 						out.write(correccion);
-						spellCheckerLog("\t4. Correccion manual: " + Utils.wrap(token) + " -> " + correccion);
+						spellCheckerLog("\t3. Correccion manual: " + Utils.wrap(token) + " -> " + correccion);
 					}
 				}
 			} else { //Si no es una palabra del diccionario, la agrego.

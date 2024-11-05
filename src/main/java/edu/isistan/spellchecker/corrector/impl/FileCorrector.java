@@ -19,7 +19,7 @@ public class FileCorrector extends Corrector {
 	 * Permite facilmente saber las correcciones de una palabra.
 	 * No me permite facilmente saber, dado una correccion, a quien corrige (hay que iterar toda la estructura).
 	 */
-	private final Map<String, Set<String>> corrections; //ineficiente, pero bien
+	private final Map<String, Set<String>> corrections;
 
 	/**
 	 * Constructor del FileReader
@@ -84,11 +84,15 @@ public class FileCorrector extends Corrector {
 			while (it.hasNext()) {
 				String line = it.next();
 				if (line != null) {
-					line.replace(" ", ""); //sacamos espacios en blanco
+
+					//sacamos espacios en blanco y tabs
+					line = line.replace(" ", "");
+					line = line.replace("\t", "");
 					String words[] = line.split(",");
-					//respetamos case
+
 					String token = words[0];
 					String correccion = words[1];
+
 					Set<String> correcs = corrections.get(token);
 					if (correcs == null) {
 						correcs = new HashSet<>();
@@ -103,17 +107,7 @@ public class FileCorrector extends Corrector {
 			throw new FormatException(e.getMessage());
 		}
 		fileCorrectorLog("printing correcciones:");
-		Set<Map.Entry<String, Set<String>>> entrySet = corrections.entrySet();
-		for (Map.Entry<String, Set<String>> entry: entrySet) {
-			StringBuilder sb = new StringBuilder("\"" + entry.getKey() + "\" -> [");
-			for (String str: entry.getValue()) {
-				sb.append(str);
-				sb.append(", ");
-			}
-			sb.delete(sb.length() -2, sb.length());
-			sb.append("]");
-			fileCorrectorLog(sb.toString());
-		}
+		printCorrecciones();
 	}
 
 	/** Construye el Filereader.
@@ -169,6 +163,20 @@ public class FileCorrector extends Corrector {
 	public static class FormatException extends Exception {
 		public FormatException(String msg) {
 			super(msg);
+		}
+	}
+
+	private void printCorrecciones() {
+		Set<Map.Entry<String, Set<String>>> entrySet = corrections.entrySet();
+		for (Map.Entry<String, Set<String>> entry: entrySet) {
+			StringBuilder sb = new StringBuilder("\"" + entry.getKey() + "\" -> [");
+			for (String str: entry.getValue()) {
+				sb.append(str);
+				sb.append(", ");
+			}
+			sb.delete(sb.length() -2, sb.length());
+			sb.append("]");
+			fileCorrectorLog(sb.toString());
 		}
 	}
 }

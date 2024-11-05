@@ -1,5 +1,6 @@
 package edu.isistan.spellchecker.corrector.impl;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -25,6 +26,7 @@ public class SwapCorrector extends Corrector {
 	 * @throws IllegalArgumentException si el diccionario provisto es null
 	 */
 	public SwapCorrector(Dictionary dict) {
+		if (dict == null) throw new IllegalArgumentException("Dict is null");
 		this.dictionary = dict;
 	}
 
