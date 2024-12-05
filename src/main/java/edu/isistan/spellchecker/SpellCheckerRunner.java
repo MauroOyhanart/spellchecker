@@ -10,6 +10,7 @@ import java.io.Writer;
 import edu.isistan.spellchecker.corrector.Corrector;
 import edu.isistan.spellchecker.corrector.dictionary.Dictionary;
 import edu.isistan.spellchecker.corrector.dictionary.IDictionary;
+import edu.isistan.spellchecker.corrector.dictionary.TrieDictionary;
 import edu.isistan.spellchecker.corrector.impl.FileCorrector;
 import edu.isistan.spellchecker.corrector.impl.Levenshtein;
 import edu.isistan.spellchecker.corrector.impl.SwapCorrector;
@@ -53,15 +54,24 @@ public class SpellCheckerRunner {
 	}
 
 	public static void main(String[] args) {
+		start(args, false);
+	}
+
+	public static void start(String args[], boolean trieDictionary) {
 		if (args.length != 4) {
 			log("uso: java SpellCheckRunner <in> <out> <dictionary> <corrector>");
 			log("<corrector> es SWAP, LEV, or el path para instanciar el FileCorrector.");
 			return;
 		}
 		try (Reader in = new BufferedReader(new FileReader(args[0]));
-			Writer out = new BufferedWriter(new FileWriter(args[1]))) {
-						log("inicializando objetos");
-			IDictionary dict = Dictionary.make(args[2]);
+			 Writer out = new BufferedWriter(new FileWriter(args[1]))) {
+			log("inicializando objetos");
+
+			IDictionary dict = null;
+			if (trieDictionary)
+				dict = TrieDictionary.make(args[2]);
+			else dict = Dictionary.make(args[2]);
+
 			SpellChecker sp = new SpellChecker(makeCorrector(args[3], dict), dict);
 			log("chequeando documento");
 			sp.checkDocument(in, System.in, out);

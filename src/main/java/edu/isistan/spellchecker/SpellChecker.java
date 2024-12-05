@@ -119,10 +119,11 @@ public class SpellChecker {
 						spellCheckerLog("\t3. Usamos " + Utils.wrap(correccion));
 						out.write(correccion);
 					} else {
-						spellCheckerLog("\t3. No hay correcciones. Ingresela por consola");
+						/*spellCheckerLog("\t3. No hay correcciones. Ingresela por consola");
 						String correccion = readNext(reader);
 						out.write(correccion);
-						spellCheckerLog("\t3. Correccion manual: " + Utils.wrap(token) + " -> " + correccion);
+						spellCheckerLog("\t3. Correccion manual: " + Utils.wrap(token) + " -> " + correccion);*/
+						spellCheckerLog("\t3. No hay correcciones. Se descarta (Por benchmarks)");
 					}
 				}
 			} else { //Si no es una palabra del diccionario, la agrego.

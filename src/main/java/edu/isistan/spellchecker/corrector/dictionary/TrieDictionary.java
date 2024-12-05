@@ -3,6 +3,9 @@ package edu.isistan.spellchecker.corrector.dictionary;
 import edu.isistan.spellchecker.corrector.dictionary.trie.Trie;
 import edu.isistan.spellchecker.tokenizer.TokenScanner;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -27,6 +30,13 @@ public class TrieDictionary implements IDictionary {
             }
         }
         dictionaryLog(dic.getNumWords() + " words in dictionary");
+    }
+
+    public static TrieDictionary make(String filename) throws IOException {
+        Reader r = new FileReader(filename);
+        TrieDictionary d = new TrieDictionary(new TokenScanner(r));
+        r.close();
+        return d;
     }
 
     @Override
