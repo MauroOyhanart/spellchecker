@@ -7,13 +7,12 @@ import java.util.TreeSet;
 import java.util.Set;
 
 
-
+import edu.isistan.spellchecker.corrector.dictionary.IDictionary;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.isistan.spellchecker.corrector.Dictionary;
-import edu.isistan.spellchecker.corrector.impl.Levenshtein;
+import edu.isistan.spellchecker.corrector.dictionary.Dictionary;
 import edu.isistan.spellchecker.tokenizer.TokenScanner;
 
 public class LevenshteinTest {
@@ -30,7 +29,7 @@ public class LevenshteinTest {
 
 
 	@Before public void setUp() throws IOException {
-		Dictionary dict = new Dictionary(new TokenScanner(new FileReader("/usr/local/tallerjava/proyectofinal/smallDictionary.txt")));
+		IDictionary dict = new Dictionary(new TokenScanner(new FileReader("/usr/local/tallerjava/proyectofinal/smallDictionary.txt")));
 		corr = new Levenshtein(dict);
 	}
 

@@ -4,7 +4,6 @@ import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,14 +13,12 @@ import java.io.Reader;
 import java.io.Writer;
 
 
-
+import edu.isistan.spellchecker.corrector.dictionary.IDictionary;
 import org.junit.Test;
 
 import edu.isistan.spellchecker.SpellChecker;
 import edu.isistan.spellchecker.corrector.Corrector;
-import edu.isistan.spellchecker.corrector.Dictionary;
-import edu.isistan.spellchecker.corrector.impl.FileCorrector;
-import edu.isistan.spellchecker.corrector.impl.SwapCorrector;
+import edu.isistan.spellchecker.corrector.dictionary.Dictionary;
 
 
 public class SpellCheckerTest {
@@ -31,7 +28,7 @@ public class SpellCheckerTest {
 			String fdoc, String fout, String finput) 
 					throws IOException, FileCorrector.FormatException
 	{
-		Dictionary dict = Dictionary.make(fdict);
+		IDictionary dict = Dictionary.make(fdict);
 
 		Corrector corr = null;
 		if (fcorr == null) {

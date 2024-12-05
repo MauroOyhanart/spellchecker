@@ -1,5 +1,7 @@
 package edu.isistan.spellchecker;
-import edu.isistan.spellchecker.corrector.Dictionary;
+import edu.isistan.spellchecker.corrector.dictionary.Dictionary;
+import edu.isistan.spellchecker.corrector.dictionary.IDictionary;
+import edu.isistan.spellchecker.corrector.dictionary.trie.Trie;
 import edu.isistan.spellchecker.corrector.impl.FileCorrector;
 import edu.isistan.spellchecker.corrector.impl.SwapCorrector;
 import edu.isistan.spellchecker.tokenizer.TokenScanner;
@@ -8,10 +10,8 @@ import org.junit.*;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 
@@ -142,7 +142,7 @@ public class MyTests {
     public void testDoesNotExistWord() throws IOException{
         Reader in = new StringReader("Some words in a soup");
         try {
-            Dictionary dict = loadForTest(in);
+            IDictionary dict = loadForTest(in);
             assertFalse(dict.isWord("south"));
         } catch (IOException ioe) {
             System.out.println("Could not complete test: " + ioe.getMessage());
@@ -158,7 +158,7 @@ public class MyTests {
     public void testDoesExistWord() throws IOException {
         Reader in = new StringReader("Some words in a soup");
         try {
-            Dictionary dict = loadForTest(in);
+            IDictionary dict = loadForTest(in);
             assertTrue(dict.isWord("some"));
         } catch (IOException ioe) {
             System.out.println("Could not complete test: " + ioe.getMessage());
@@ -174,7 +174,7 @@ public class MyTests {
     public void testCountWordsInDict() throws IOException {
         Reader in = new StringReader("Some words in a soup");
         try {
-            Dictionary dict = loadForTest(in);
+            IDictionary dict = loadForTest(in);
             assertEquals(5, dict.getNumWords());
         } catch (IOException ioe) {
             System.out.println("Could not complete test: " + ioe.getMessage());
@@ -189,7 +189,7 @@ public class MyTests {
     public void testIsWord() throws IOException {
         Reader in = new StringReader("Some words in a soup");
         try {
-            Dictionary dict = loadForTest(in);
+            IDictionary dict = loadForTest(in);
             assertFalse(dict.isWord(" "));
         } catch (IOException ioe) {
             System.out.println("Could not complete test: " + ioe.getMessage());
@@ -204,7 +204,7 @@ public class MyTests {
     public void testSameWordDiffCaps() throws IOException {
         Reader in = new StringReader("Some words in a soup");
         try {
-            Dictionary dict = loadForTest(in);
+            IDictionary dict = loadForTest(in);
             assertTrue(dict.isWord("some"));
             assertTrue(dict.isWord("soMe"));
             assertTrue(dict.isWord("sOMe"));
@@ -319,7 +319,7 @@ public class MyTests {
     @Test
     public void testDictIsNull() {
         try {
-            Dictionary dict = null;
+            IDictionary dict = null;
             SwapCorrector swapCorrector = new SwapCorrector(dict);
             fail("Deberia tirar excepcion.");
         } catch (Exception e) {
@@ -356,5 +356,45 @@ public class MyTests {
         assertEquals("Table", swapCorrector.getCorrections("TABEL").stream().findFirst().orElse("-1"));
     }
 
+
+    /**
+     * Algunos tests para el Trie
+     *
+     */
+    @Test
+    public void testTrie() {
+        Trie trie = new Trie();
+
+        trie.insert("cat");
+        trie.insert("cattle");
+        trie.insert("cat");
+        trie.insert("home");
+        trie.insert("kitten");
+
+        trie.printTrie();
+
+        System.out.println("search for kit: " + trie.search("kit"));
+        System.out.println("search for te: " + trie.search("te"));
+        System.out.println("search for cat: " + trie.search("cat"));
+        System.out.println("search for hom: " + trie.search("hom"));
+        System.out.println("search for home: " + trie.search("home"));
+    }
+
+    @Test
+    public void testTrieFilterBy() {
+        Trie trie = new Trie();
+
+        trie.insert("cat");
+        trie.insert("cattle");
+        trie.insert("cat");
+        trie.insert("home");
+        trie.insert("kitten");
+
+        Set<String> words = trie.filterBy(s -> {
+            if (s.equals("cat")) return 1;
+            return 0;
+        });
+        System.out.println("search filter by for cat: " + words.size() + " words obtained");
+    }
 
 }

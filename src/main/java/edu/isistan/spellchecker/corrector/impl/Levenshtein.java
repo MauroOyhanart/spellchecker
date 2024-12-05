@@ -3,7 +3,8 @@ import java.util.Set;
 
 
 import edu.isistan.spellchecker.corrector.Corrector;
-import edu.isistan.spellchecker.corrector.Dictionary;
+import edu.isistan.spellchecker.corrector.dictionary.Dictionary;
+import edu.isistan.spellchecker.corrector.dictionary.IDictionary;
 
 /**
  *
@@ -23,7 +24,7 @@ import edu.isistan.spellchecker.corrector.Dictionary;
  * Este corrector sugiere palabras que esten a edit distance uno.
  */
 public class Levenshtein extends Corrector {
-	private final Dictionary dictionary;
+	private final IDictionary dictionary;
 
 	/**
 	 * Construye un Levenshtein Corrector usando un Dictionary.
@@ -31,7 +32,7 @@ public class Levenshtein extends Corrector {
 	 *
 	 * @param dict el diccionario
 	 */
-	public Levenshtein(Dictionary dict) {
+	public Levenshtein(IDictionary dict) {
 		if (dict == null) throw new IllegalArgumentException("Dictionary cannot be null");
 		this.dictionary = dict;
 

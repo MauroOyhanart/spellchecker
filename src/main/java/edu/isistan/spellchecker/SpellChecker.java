@@ -1,15 +1,12 @@
 package edu.isistan.spellchecker;
 import java.io.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
 import edu.isistan.spellchecker.corrector.Corrector;
-import edu.isistan.spellchecker.corrector.Dictionary;
+import edu.isistan.spellchecker.corrector.dictionary.IDictionary;
 import edu.isistan.spellchecker.tokenizer.TokenScanner;
 
 /**
@@ -29,7 +26,7 @@ import edu.isistan.spellchecker.tokenizer.TokenScanner;
  */
 public class SpellChecker {
 	private final Corrector corr;
-	private final Dictionary dict;
+	private final IDictionary dict;
 
 	/**
 	 * Constructor del SpellChecker
@@ -38,7 +35,7 @@ public class SpellChecker {
 	 * @param d un Dictionary
 	 * @throws NullPointerException si el corrector es null o el diccionario es null
 	 */
-	public SpellChecker(Corrector c, Dictionary d) {
+	public SpellChecker(Corrector c, IDictionary d) {
 		this.corr = Objects.requireNonNull(c);
 		this.dict = Objects.requireNonNull(d);
 	}

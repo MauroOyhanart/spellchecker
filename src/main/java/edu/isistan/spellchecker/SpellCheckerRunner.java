@@ -8,7 +8,8 @@ import java.io.Reader;
 import java.io.Writer;
 
 import edu.isistan.spellchecker.corrector.Corrector;
-import edu.isistan.spellchecker.corrector.Dictionary;
+import edu.isistan.spellchecker.corrector.dictionary.Dictionary;
+import edu.isistan.spellchecker.corrector.dictionary.IDictionary;
 import edu.isistan.spellchecker.corrector.impl.FileCorrector;
 import edu.isistan.spellchecker.corrector.impl.Levenshtein;
 import edu.isistan.spellchecker.corrector.impl.SwapCorrector;
@@ -37,7 +38,7 @@ public class SpellCheckerRunner {
 	 * @throws IOException
 	 * @throws FileCorrector.FormatException
 	 */
-	private static Corrector makeCorrector(String type, Dictionary dict)
+	private static Corrector makeCorrector(String type, IDictionary dict)
 			throws IOException, FileCorrector.FormatException {
 		if (type.equals("SWAP")) {
 			log("Corrector -> SwapCorrector");
@@ -60,7 +61,7 @@ public class SpellCheckerRunner {
 		try (Reader in = new BufferedReader(new FileReader(args[0]));
 			Writer out = new BufferedWriter(new FileWriter(args[1]))) {
 						log("inicializando objetos");
-			Dictionary dict = Dictionary.make(args[2]);
+			IDictionary dict = Dictionary.make(args[2]);
 			SpellChecker sp = new SpellChecker(makeCorrector(args[3], dict), dict);
 			log("chequeando documento");
 			sp.checkDocument(in, System.in, out);

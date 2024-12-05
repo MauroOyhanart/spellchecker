@@ -1,11 +1,11 @@
 package edu.isistan.spellchecker.corrector.impl;
 
-import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
 
 import edu.isistan.spellchecker.corrector.Corrector;
-import edu.isistan.spellchecker.corrector.Dictionary;
+import edu.isistan.spellchecker.corrector.dictionary.Dictionary;
+import edu.isistan.spellchecker.corrector.dictionary.IDictionary;
+
 /**
  * Este corrector sugiere correciones cuando dos letras adyacentes han sido cambiadas.
  * <p>
@@ -18,14 +18,14 @@ import edu.isistan.spellchecker.corrector.Dictionary;
  * Solo cambio de letras contiguas se considera como swap.
  */
 public class SwapCorrector extends Corrector {
-	private final Dictionary dictionary;
+	private final IDictionary dictionary;
 	/**
 	 * Construye el SwapCorrector usando un Dictionary.
 	 *
 	 * @param dict 
 	 * @throws IllegalArgumentException si el diccionario provisto es null
 	 */
-	public SwapCorrector(Dictionary dict) {
+	public SwapCorrector(IDictionary dict) {
 		if (dict == null) throw new IllegalArgumentException("Dict is null");
 		this.dictionary = dict;
 	}

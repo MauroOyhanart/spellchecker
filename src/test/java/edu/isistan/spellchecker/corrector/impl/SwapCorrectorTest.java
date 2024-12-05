@@ -1,9 +1,10 @@
 package edu.isistan.spellchecker.corrector.impl;
 import static org.junit.Assert.*;
+
+import edu.isistan.spellchecker.corrector.dictionary.IDictionary;
 import org.junit.*;
 
-import edu.isistan.spellchecker.corrector.Dictionary;
-import edu.isistan.spellchecker.corrector.impl.SwapCorrector;
+import edu.isistan.spellchecker.corrector.dictionary.Dictionary;
 import edu.isistan.spellchecker.tokenizer.TokenScanner;
 
 import java.io.*;
@@ -27,7 +28,7 @@ public class SwapCorrectorTest {
 	@Test public void testSwapCorrections() throws IOException {
 		Reader reader = new FileReader("/usr/local/tallerjava/proyectofinal/smallDictionary.txt");
 		try {
-			Dictionary d = new Dictionary(new TokenScanner(reader));
+			IDictionary d = new Dictionary(new TokenScanner(reader));
 			SwapCorrector swap = new SwapCorrector(d);
 			assertEquals("cya -> {cay}", makeSet(new String[]{"cay"}), swap.getCorrections("cya"));
 			assertEquals("oYurs -> {yours}", makeSet(new String[]{"yours"}), swap.getCorrections("oYurs"));
