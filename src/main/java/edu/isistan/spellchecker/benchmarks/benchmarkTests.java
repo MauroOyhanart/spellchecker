@@ -15,10 +15,11 @@ public class benchmarkTests {
          * /usr/local/tallerjava/proyectofinal/dictionary.txt
          * /usr/local/tallerjava/proyectofinal/misspellings.txt
          */
-        public String[] args = {"/usr/local/tallerjava/proyectofinal/Gettysburg.txt",
+        public String[] args = {
+                "/usr/local/tallerjava/proyectofinal/theFox.txt",
                 "/usr/local/tallerjava/proyectofinal/output.txt",
-                "/usr/local/tallerjava/proyectofinal/dictionary.txt",
-                "/usr/local/tallerjava/proyectofinal/misspellings.txt"
+                "/usr/local/tallerjava/proyectofinal/theFoxDictionary.txt",
+                "LEV"
         };
     }
 
