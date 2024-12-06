@@ -15,10 +15,10 @@ public class benchmarkTests {
          * /usr/local/tallerjava/proyectofinal/dictionary.txt
          * /usr/local/tallerjava/proyectofinal/misspellings.txt
          */
-        public String[] args = {"/usr/local/tallerjava/proyectofinal/theFox.txt",
+        public String[] args = {"/usr/local/tallerjava/proyectofinal/Gettysburg.txt",
                 "/usr/local/tallerjava/proyectofinal/output.txt",
-                "/usr/local/tallerjava/proyectofinal/theFoxDictionary.txt",
-                "/usr/local/tallerjava/proyectofinal/theFoxMisspellings.txt"
+                "/usr/local/tallerjava/proyectofinal/dictionary.txt",
+                "/usr/local/tallerjava/proyectofinal/misspellings.txt"
         };
     }
 
@@ -29,7 +29,7 @@ public class benchmarkTests {
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     @Fork(1) //nueva instancia de la jvm
     public void benchmarkSpellChecker(BenchmarkState state) {
-        SpellCheckerRunner.start(state.args, false);
+        SpellCheckerRunner.start(state.args, true);
     }
 
 }
